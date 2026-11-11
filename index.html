@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Nexo Achados — Ofertas selecionadas</title>
+<style>
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --blue: #2563eb;
+  --blue-dark: #1d4ed8;
+  --cyan: #06b6d4;
+  --border: #e2e8f0;
+  --radius: 18px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+  --shadow-hover: 0 12px 32px rgba(37, 99, 235, 0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 18% 28%, rgba(6, 182, 212, 0.05) 0 1px, transparent 1px),
+    radial-gradient(circle at 82% 72%, rgba(37, 99, 235, 0.04) 0 1px, transparent 1px);
+  background-size: 42px 42px, 58px 58px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button, input { font: inherit; color: inherit; }
+
+/* Header */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 13px 18px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+}
+.logo-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+  position: relative;
+}
+.logo-mark::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.8);
+  border-top-color: transparent;
+  animation: spin 8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.logo-text {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.logo-text span {
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.search-wrap {
+  flex: 1;
+  max-width: 400px;
+  position: relative;
+}
+.search-wrap input {
+  width: 100%;
+  padding: 11px 40px 11px 40px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-wrap input::placeholder { color: var(--muted); }
+.search-wrap input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+.search-wrap .icon-search {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 17px;
+  height: 17px;
+  stroke: var(--muted);
+  fill: none;
+  stroke-width: 2;
+  pointer-events: none;
+}
+.search-wrap .btn-clear {
+  position: absolute;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: #e2e8f0;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--muted);
+}
+.search-wrap.has-value .btn-clear { display: flex; }
+
+.nav {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.nav a {
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+  transition: 0.15s;
+}
+.nav a:hover { color: var(--text); background: #f1f5f9; }
+.nav a.active {
+  color: var(--blue);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+/* Hero */
+.hero {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 48px 18px 32px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(6, 182, 212, 0.1);
+  color: var(--cyan);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-size: clamp(26px, 5vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  color: var(--muted);
+  font-size: 15px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* Products */
+.section {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 18px 52px;
+  position: relative;
+  z-index: 1;
+}
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+.section-head h2 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.section-head span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s;
+  display: flex;
+  flex-direction: column;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(37, 99, 235, 0.25);
+}
+
+.card-img {
+  aspect-ratio: 1 / 1;
+  background: #f1f5f9;
+  position: relative;
+  overflow: hidden;
+}
+.card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.card:hover .card-img img { transform: scale(1.04); }
+
+.card-tag {
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.95);
+  color: var(--blue);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.card-body {
+  padding: 14px 15px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 4px;
+}
+.card-cat {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.card-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-spec {
+  font-size: 12px;
+  color: var(--muted);
+}
+.card-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-top: 7px;
+  flex-wrap: wrap;
+}
+.card-price {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.card-old {
+  font-size: 12.5px;
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.card-discount {
+  font-size: 11px;
+  font-weight: 600;
+  color: #059669;
+  background: rgba(5, 150, 105, 0.1);
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+
+.card-act {
+  margin-top: auto;
+  padding-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 14px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.15s;
+  white-space: nowrap;
+}
+.btn-buy {
+  flex: 1;
+  background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+}
+.btn-buy:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+  filter: brightness(1.05);
+}
+.btn-info {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  background: #f1f5f9;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.btn-info:hover {
+  color: var(--blue);
+  border-color: rgba(37, 99, 235, 0.35);
+  background: rgba(37, 99, 235, 0.06);
+}
+
+/* Affiliates */
+.aff {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  align-items: center;
+  box-shadow: var(--shadow);
+}
+.aff h3 {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+.aff p {
+  color: var(--muted);
+  font-size: 13.5px;
+  margin-bottom: 12px;
+}
+.aff-logos {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.aff-logo {
+  padding: 7px 14px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: #f8fafc;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  padding: 22px 18px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.footer p {
+  font-size: 12.5px;
+  color: var(--muted);
+  max-width: 500px;
+  margin: 0 auto 5px;
+}
+.footer .copy {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 44px 18px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* Modal */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(5px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-bg.on { display: flex; }
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  max-width: 380px;
+  width: 100%;
+  padding: 22px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  animation: in 0.22s ease;
+}
+@keyframes in {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.modal h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.modal p {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.modal .spec-list {
+  margin: 12px 0 16px;
+  font-size: 13px;
+  color: var(--text);
+}
+.modal .spec-list div {
+  margin-bottom: 4px;
+}
+.modal .spec-list span {
+  color: var(--muted);
+  display: inline-block;
+  min-width: 68px;
+}
+
+@media (max-width: 768px) {
+  .header-inner { padding: 11px 14px; gap: 10px; }
+  .nav { display: none; }
+  .search-wrap { max-width: none; }
+  .hero { padding: 30px 14px 22px; }
+  .section { padding: 0 14px 40px; }
+  .aff { grid-template-columns: 1fr; padding: 20px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .card-body { padding: 11px 12px 13px; }
+  .card-price { font-size: 16px; }
+  .btn-buy { padding: 10px 11px; font-size: 13px; }
+  .btn-info { width: 38px; height: 38px; }
+}
+@media (max-width: 400px) {
+  .grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark"></div>
+      <div class="logo-text">Nexo <span>Achados</span></div>
+    </a>
+
+    <div class="search-wrap" id="searchWrap">
+      <svg class="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="search" id="search" placeholder="Buscar iPhone, MacBook..." aria-label="Buscar produtos" autocomplete="off">
+      <button type="button" class="btn-clear" id="btnClear" aria-label="Limpar busca">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <nav class="nav">
+      <a href="#produtos" class="active">Produtos</a>
+      <a href="#afiliados">Afiliados</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-badge">● Ofertas selecionadas</div>
+  <h1>Achados que valem<br>a <em>pena</em></h1>
+  <p>iPhones e MacBooks com os melhores preços de Shopee e Mercado Livre.</p>
+</section>
+
+<section class="section" id="produtos">
+  <div class="section-head">
+    <h2>Produtos em destaque</h2>
+    <span id="count">8 itens</span>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="section" id="afiliados">
+  <div class="aff">
+    <div>
+      <h3>Links de afiliados</h3>
+      <p>Os produtos possuem links de afiliados. Ao comprar por eles você apoia o Nexo Achados sem custo extra.</p>
+      <div class="aff-logos">
+        <div class="aff-logo">Shopee</div>
+        <div class="aff-logo">Mercado Livre</div>
+      </div>
+    </div>
+    <a href="#produtos" class="btn btn-buy" style="width:auto;padding:11px 22px">Ver ofertas</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>Este site contém links de afiliados. Podemos receber comissão por compras realizadas através deles, sem custo adicional para você.</p>
+  <p class="copy">© 2026 Nexo Achados</p>
+</footer>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const products = [
+  {
+    id: 1,
+    title: "iPhone 16 Pro 128GB",
+    cat: "Smartphones",
+    spec: "Titânio Natural · A18 Pro",
+    price: 8999,
+    old: 9999,
+    tag: "Destaque",
+    img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=600&fit=crop",
+    link: "https://www.mercadolivre.com.br",
+    info: "Chip A18 Pro, tela Super Retina XDR, câmera 48MP, design em titânio."
+  },
+  {
+    id: 2,
+    title: "MacBook Air 13\" M3",
+    cat: "Notebooks",
+    spec: "8GB · 256GB · Midnight",
+    price: 8499,
+    old: 9499,
+    tag: "Oferta",
+    img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&h=600&fit=crop",
+    link: "https://www.mercadolivre.com.br",
+    info: "Chip Apple M3, tela Liquid Retina 13.6\", até 18h de bateria."
+  },
+  {
+    id: 3,
+    title: "iPhone 15 Pro Max 256GB",
+    cat: "Smartphones",
+    spec: "Titânio Azul · A17 Pro",
+    price: 8499,
+    old: 9499,
+    tag: "Premium",
+    img: "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600&h=600&fit=crop",
+    link: "https://shopee.com.br",
+    info: "Chip A17 Pro, Action Button, zoom óptico 5x, titanium."
+  },
+  {
+    id: 4,
+    title: "MacBook Pro 14\" M3 Pro",
+    cat: "Notebooks",
+    spec: "18GB · 512GB · Space Black",
+    price: 14999,
+    old: 16999,
+    tag: "Pro",
+    img: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=600&fit=crop",
+    link: "https://www.mercadolivre.com.br",
+    info: "Chip M3 Pro, tela Liquid Retina XDR, até 22h de bateria."
+  },
+  {
+    id: 5,
+    title: "iPhone 16 128GB",
+    cat: "Smartphones",
+    spec: "Preto · A18 · Camera Control",
+    price: 5999,
+    old: 6799,
+    tag: "",
+    img: "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600&h=600&fit=crop",
+    link: "https://shopee.com.br",
+    info: "Chip A18, Camera Control, tela 6.1\", USB-C."
+  },
+  {
+    id: 6,
+    title: "MacBook Air 15\" M3",
+    cat: "Notebooks",
+    spec: "8GB · 256GB · Starlight",
+    price: 9999,
+    old: 10999,
+    tag: "Grande",
+    img: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&h=600&fit=crop",
+    link: "https://www.mercadolivre.com.br",
+    info: "Tela 15.3\", chip M3, design fino e leve."
+  },
+  {
+    id: 7,
+    title: "iPhone 15 128GB",
+    cat: "Smartphones",
+    spec: "Rosa · A16 · Dynamic Island",
+    price: 4599,
+    old: 5299,
+    tag: "Achado",
+    img: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=600&h=600&fit=crop",
+    link: "https://shopee.com.br",
+    info: "Chip A16 Bionic, Dynamic Island, câmera 48MP."
+  },
+  {
+    id: 8,
+    title: "Mac mini M2",
+    cat: "Desktops",
+    spec: "8GB · 256GB · Compacto",
+    price: 4299,
+    old: 4999,
+    tag: "",
+    img: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&h=600&fit=crop",
+    link: "https://www.mercadolivre.com.br",
+    info: "Desktop compacto com chip M2, desempenho alto e silencioso."
+  }
+];
+
+const grid = document.getElementById("grid");
+const searchInput = document.getElementById("search");
+const searchWrap = document.getElementById("searchWrap");
+const btnClear = document.getElementById("btnClear");
+const countEl = document.getElementById("count");
+const modalBg = document.getElementById("modalBg");
+const modal = document.getElementById("modal");
+
+function formatPrice(v) {
+  return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function discount(oldP, price) {
+  if (!oldP || oldP <= price) return 0;
+  return Math.round(((oldP - price) / oldP) * 100);
+}
+
+function render(list) {
+  countEl.textContent = list.length + (list.length === 1 ? " item" : " itens");
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty">Nenhum produto encontrado.</div>`;
+    return;
+  }
+  grid.innerHTML = list.map(p => {
+    const disc = discount(p.old, p.price);
+    return `
+    <article class="card">
+      <div class="card-img">
+        ${p.tag ? `<span class="card-tag">${p.tag}</span>` : ""}
+        <img src="${p.img}" alt="${p.title}" loading="lazy" onerror="this.src='https://placehold.co/600x600/e2e8f0/64748b?text=Produto'">
+      </div>
+      <div class="card-body">
+        <div class="card-cat">${p.cat}</div>
+        <h3 class="card-title">${p.title}</h3>
+        <div class="card-spec">${p.spec}</div>
+        <div class="card-price-row">
+          <span class="card-price">${formatPrice(p.price)}</span>
+          ${p.old ? `<span class="card-old">${formatPrice(p.old)}</span>` : ""}
+          ${disc ? `<span class="card-discount">-${disc}%</span>` : ""}
+        </div>
+        <div class="card-act">
+          <a href="${p.link}" class="btn btn-buy" target="_blank" rel="noopener noreferrer">Comprar</a>
+          <button type="button" class="btn btn-info" data-id="${p.id}" aria-label="Mais informações">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          </button>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+}
+
+function doSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  searchWrap.classList.toggle("has-value", q.length > 0);
+  if (!q) { render(products); return; }
+  const filtered = products.filter(p =>
+    p.title.toLowerCase().includes(q) ||
+    p.cat.toLowerCase().includes(q) ||
+    p.spec.toLowerCase().includes(q) ||
+    (p.tag && p.tag.toLowerCase().includes(q))
+  );
+  render(filtered);
+}
+
+searchInput.addEventListener("input", doSearch);
+btnClear.addEventListener("click", () => {
+  searchInput.value = "";
+  searchInput.focus();
+  doSearch();
+});
+
+grid.addEventListener("click", e => {
+  const btn = e.target.closest("button[data-id]");
+  if (!btn) return;
+  e.preventDefault();
+  const p = products.find(x => x.id == btn.dataset.id);
+  if (!p) return;
+  modal.innerHTML = `
+    <h3>${p.title}</h3>
+    <p>${p.info}</p>
+    <div class="spec-list">
+      <div><span>Categoria</span> ${p.cat}</div>
+      <div><span>Specs</span> ${p.spec}</div>
+      <div><span>Preço</span> ${formatPrice(p.price)}${p.old ? ` · <s style="color:var(--muted)">${formatPrice(p.old)}</s>` : ""}</div>
+    </div>
+    <a href="${p.link}" class="btn btn-buy" style="width:100%" target="_blank" rel="noopener noreferrer">Ir para a oferta</a>
+    <button type="button" class="btn btn-info" style="width:100%;margin-top:8px;border-radius:999px;height:auto;padding:10px" id="closeModal">Fechar</button>
+  `;
+  modalBg.classList.add("on");
+  document.getElementById("closeModal").onclick = () => modalBg.classList.remove("on");
+});
+
+modalBg.addEventListener("click", e => {
+  if (e.target === modalBg) modalBg.classList.remove("on");
+});
+
+render(products);
+</script>
+</body>
+</html>
