@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="Nexo Achados — Ofertas selecionadas de Shopee e Mercado Livre.">
 <title>Nexo Achados — Ofertas selecionadas</title>
 <style>
 :root {
@@ -20,6 +23,7 @@
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
   --shadow-hover: 0 12px 32px rgba(37, 99, 235, 0.12);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,9 +51,9 @@ body::before {
 
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
-button, input { font: inherit; color: inherit; }
+button, input, select { font: inherit; color: inherit; }
 
-/* Header */
+/* ========== HEADER ========== */
 .header {
   position: sticky;
   top: 0;
@@ -65,7 +69,7 @@ button, input { font: inherit; color: inherit; }
   padding: 13px 18px;
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
 }
 .logo {
   display: flex;
@@ -73,24 +77,12 @@ button, input { font: inherit; color: inherit; }
   gap: 9px;
   flex-shrink: 0;
 }
-.logo-mark {
+.logo-svg {
   width: 36px;
   height: 36px;
-  border-radius: 11px;
-  background: linear-gradient(135deg, var(--blue), var(--cyan));
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
-  position: relative;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 10px rgba(37, 99, 235, 0.3));
 }
-.logo-mark::after {
-  content: "";
-  position: absolute;
-  inset: 7px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.8);
-  border-top-color: transparent;
-  animation: spin 8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
 .logo-text {
   font-size: 17px;
   font-weight: 700;
@@ -105,7 +97,7 @@ button, input { font: inherit; color: inherit; }
 
 .search-wrap {
   flex: 1;
-  max-width: 400px;
+  max-width: 380px;
   position: relative;
 }
 .search-wrap input {
@@ -151,33 +143,86 @@ button, input { font: inherit; color: inherit; }
   justify-content: center;
   cursor: pointer;
   color: var(--muted);
+  transition: background 0.15s;
 }
+.search-wrap .btn-clear:hover { background: #cbd5e1; }
 .search-wrap.has-value .btn-clear { display: flex; }
 
 .nav {
   display: flex;
   gap: 4px;
   flex-shrink: 0;
+  align-items: center;
 }
-.nav a {
+.nav a, .nav button {
   padding: 7px 13px;
   border-radius: 999px;
   font-size: 13.5px;
   font-weight: 500;
   color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
   transition: 0.15s;
 }
-.nav a:hover { color: var(--text); background: #f1f5f9; }
-.nav a.active {
+.nav a:hover, .nav button:hover { color: var(--text); background: #f1f5f9; }
+.nav a.active, .nav button.active {
   color: var(--blue);
   background: rgba(37, 99, 235, 0.08);
 }
 
-/* Hero */
+.btn-menu {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: #f1f5f9;
+  border-radius: 12px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text);
+  flex-shrink: 0;
+}
+.btn-menu svg { width: 20px; height: 20px; }
+
+.mobile-nav {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px 14px;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 12px 28px rgba(15,23,42,0.08);
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a, .mobile-nav button {
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.mobile-nav a:hover, .mobile-nav button:hover,
+.mobile-nav a.active, .mobile-nav button.active {
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--blue);
+}
+
+/* ========== HERO ========== */
 .hero {
   max-width: 1140px;
   margin: 0 auto;
-  padding: 48px 18px 32px;
+  padding: 44px 18px 28px;
   text-align: center;
   position: relative;
   z-index: 1;
@@ -193,7 +238,7 @@ button, input { font: inherit; color: inherit; }
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 .hero h1 {
   font-size: clamp(26px, 5vw, 40px);
@@ -216,7 +261,65 @@ button, input { font: inherit; color: inherit; }
   margin: 0 auto;
 }
 
-/* Products */
+/* ========== CONTROLS ========== */
+.controls {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 18px 18px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1;
+}
+.filter-btn {
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+.filter-btn.active {
+  background: rgba(37, 99, 235, 0.1);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.sort-wrap {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.sort-wrap label {
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.sort-wrap select {
+  padding: 7px 11px;
+  border-radius: 11px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.sort-wrap select:focus { border-color: var(--blue); }
+
+/* ========== SECTION ========== */
 .section {
   max-width: 1140px;
   margin: 0 auto;
@@ -228,7 +331,7 @@ button, input { font: inherit; color: inherit; }
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   gap: 12px;
 }
 .section-head h2 {
@@ -239,6 +342,7 @@ button, input { font: inherit; color: inherit; }
 .section-head span {
   font-size: 13px;
   color: var(--muted);
+  white-space: nowrap;
 }
 
 .grid {
@@ -247,6 +351,7 @@ button, input { font: inherit; color: inherit; }
   gap: 16px;
 }
 
+/* ========== CARD ========== */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -256,11 +361,27 @@ button, input { font: inherit; color: inherit; }
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-hover);
   border-color: rgba(37, 99, 235, 0.25);
+}
+.card.unavailable { opacity: 0.7; }
+.card.unavailable .card-img::after {
+  content: "Indisponível";
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  z-index: 1;
 }
 
 .card-img {
@@ -288,7 +409,31 @@ button, input { font: inherit; color: inherit; }
   background: rgba(255,255,255,0.95);
   color: var(--blue);
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  z-index: 2;
 }
+
+.card-fav {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  color: var(--muted);
+  transition: transform 0.15s, color 0.15s;
+}
+.card-fav:hover { transform: scale(1.08); }
+.card-fav.active { color: #ef4444; }
+.card-fav svg { width: 16px; height: 16px; fill: currentColor; stroke: currentColor; stroke-width: 1.5; }
+.card-fav:not(.active) svg { fill: none; }
 
 .card-body {
   padding: 14px 15px 16px;
@@ -364,6 +509,7 @@ button, input { font: inherit; color: inherit; }
   transition: 0.15s;
   white-space: nowrap;
 }
+.btn:active { transform: scale(0.97); }
 .btn-buy {
   flex: 1;
   background: linear-gradient(135deg, var(--blue), var(--blue-dark));
@@ -375,7 +521,14 @@ button, input { font: inherit; color: inherit; }
   box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
   filter: brightness(1.05);
 }
-.btn-info {
+.btn-buy:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+.btn-share, .btn-info {
   width: 42px;
   height: 42px;
   padding: 0;
@@ -385,13 +538,14 @@ button, input { font: inherit; color: inherit; }
   border-radius: 50%;
   flex-shrink: 0;
 }
-.btn-info:hover {
+.btn-share:hover, .btn-info:hover {
   color: var(--blue);
   border-color: rgba(37, 99, 235, 0.35);
   background: rgba(37, 99, 235, 0.06);
 }
+.btn-share svg, .btn-info svg { width: 16px; height: 16px; }
 
-/* Affiliates */
+/* ========== AFFILIATES ========== */
 .aff {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -428,11 +582,11 @@ button, input { font: inherit; color: inherit; }
   color: var(--muted);
 }
 
-/* Footer */
+/* ========== FOOTER ========== */
 .footer {
   border-top: 1px solid var(--border);
   background: var(--surface);
-  padding: 22px 18px;
+  padding: 22px 18px calc(22px + var(--safe-bottom));
   text-align: center;
   position: relative;
   z-index: 1;
@@ -451,12 +605,18 @@ button, input { font: inherit; color: inherit; }
 .empty {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 44px 18px;
+  padding: 48px 18px;
   color: var(--muted);
   font-size: 15px;
 }
+.empty strong {
+  display: block;
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
 
-/* Modal */
+/* ========== MODAL ========== */
 .modal-bg {
   position: fixed;
   inset: 0;
@@ -477,9 +637,9 @@ button, input { font: inherit; color: inherit; }
   width: 100%;
   padding: 22px;
   box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-  animation: in 0.22s ease;
+  animation: modalIn 0.22s ease;
 }
-@keyframes in {
+@keyframes modalIn {
   from { opacity: 0; transform: translateY(10px) scale(0.97); }
   to { opacity: 1; transform: none; }
 }
@@ -498,30 +658,58 @@ button, input { font: inherit; color: inherit; }
   font-size: 13px;
   color: var(--text);
 }
-.modal .spec-list div {
-  margin-bottom: 4px;
-}
+.modal .spec-list div { margin-bottom: 4px; }
 .modal .spec-list span {
   color: var(--muted);
   display: inline-block;
   min-width: 68px;
 }
 
+/* ========== TOAST ========== */
+.toast {
+  position: fixed;
+  bottom: calc(22px + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--text);
+  color: #fff;
+  padding: 11px 18px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 500;
+  box-shadow: 0 8px 28px rgba(15,23,42,0.25);
+  z-index: 110;
+  opacity: 0;
+  transition: transform 0.28s ease, opacity 0.28s ease;
+  pointer-events: none;
+  max-width: calc(100vw - 32px);
+  text-align: center;
+}
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .header-inner { padding: 11px 14px; gap: 10px; }
   .nav { display: none; }
+  .btn-menu { display: flex; }
   .search-wrap { max-width: none; }
-  .hero { padding: 30px 14px 22px; }
+  .hero { padding: 28px 14px 20px; }
+  .controls { padding: 0 14px 14px; }
   .section { padding: 0 14px 40px; }
   .aff { grid-template-columns: 1fr; padding: 20px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
   .card-body { padding: 11px 12px 13px; }
   .card-price { font-size: 16px; }
   .btn-buy { padding: 10px 11px; font-size: 13px; }
-  .btn-info { width: 38px; height: 38px; }
+  .btn-share, .btn-info { width: 38px; height: 38px; }
+  .card-act { flex-wrap: wrap; }
 }
 @media (max-width: 400px) {
   .grid { grid-template-columns: 1fr 1fr; }
+  .filter-btn { padding: 6px 11px; font-size: 12px; }
 }
 </style>
 </head>
@@ -529,36 +717,77 @@ button, input { font: inherit; color: inherit; }
 
 <header class="header">
   <div class="header-inner">
-    <a href="#" class="logo">
-      <div class="logo-mark"></div>
+    <a href="#" class="logo" id="logoHome" aria-label="Nexo Achados — início">
+      <!-- SVG logo: molécula NEXO (5 nós + conexões) -->
+      <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#2563eb"/>
+            <stop offset="100%" stop-color="#06b6d4"/>
+          </linearGradient>
+        </defs>
+        <rect width="36" height="36" rx="11" fill="url(#logoGrad)"/>
+        <circle cx="18" cy="8" r="2.3" fill="#fff"/>
+        <circle cx="28" cy="15" r="2.3" fill="#fff"/>
+        <circle cx="24" cy="27" r="2.3" fill="#fff"/>
+        <circle cx="12" cy="27" r="2.3" fill="#fff"/>
+        <circle cx="8" cy="15" r="2.3" fill="#fff"/>
+        <path d="M18 8 L28 15 L24 27 L12 27 L8 15 Z" stroke="rgba(255,255,255,0.55)" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
+        <path d="M18 8 L24 27 M18 8 L12 27 M8 15 L28 15" stroke="rgba(255,255,255,0.32)" stroke-width="1" fill="none"/>
+      </svg>
       <div class="logo-text">Nexo <span>Achados</span></div>
     </a>
 
     <div class="search-wrap" id="searchWrap">
       <svg class="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input type="search" id="search" placeholder="Buscar iPhone, MacBook..." aria-label="Buscar produtos" autocomplete="off">
+      <input type="search" id="search" placeholder="Buscar por nome ou categoria..." aria-label="Buscar produtos" autocomplete="off">
       <button type="button" class="btn-clear" id="btnClear" aria-label="Limpar busca">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
     </div>
 
-    <nav class="nav">
-      <a href="#produtos" class="active">Produtos</a>
+    <nav class="nav" id="desktopNav">
+      <a href="#produtos" class="active" data-view="todos">Produtos</a>
+      <button type="button" data-view="favoritos" id="btnFavsDesktop">Favoritos</button>
       <a href="#afiliados">Afiliados</a>
     </nav>
+
+    <button type="button" class="btn-menu" id="btnMenu" aria-label="Abrir menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#produtos" data-view="todos" class="active">Produtos</a>
+    <button type="button" data-view="favoritos" id="btnFavsMobile">Favoritos</button>
+    <a href="#afiliados">Afiliados</a>
   </div>
 </header>
 
 <section class="hero">
   <div class="hero-badge">● Ofertas selecionadas</div>
   <h1>Achados que valem<br>a <em>pena</em></h1>
-  <p>iPhones e MacBooks com os melhores preços de Shopee e Mercado Livre.</p>
+  <p>Produtos selecionados de Shopee e Mercado Livre com os melhores preços do momento.</p>
 </section>
+
+<div class="controls" id="controls">
+  <div class="filters" id="filters"></div>
+  <div class="sort-wrap">
+    <label for="sort">Ordenar</label>
+    <select id="sort" aria-label="Ordenar produtos">
+      <option value="relevancia">Relevância</option>
+      <option value="preco-asc">Menor preço</option>
+      <option value="preco-desc">Maior preço</option>
+      <option value="nome-asc">Nome A–Z</option>
+      <option value="nome-desc">Nome Z–A</option>
+    </select>
+  </div>
+</div>
 
 <section class="section" id="produtos">
   <div class="section-head">
-    <h2>Produtos em destaque</h2>
-    <span id="count">8 itens</span>
+    <h2 id="sectionTitle">Produtos em destaque</h2>
+    <span id="count">0 itens</span>
   </div>
   <div class="grid" id="grid"></div>
 </section>
@@ -567,7 +796,7 @@ button, input { font: inherit; color: inherit; }
   <div class="aff">
     <div>
       <h3>Links de afiliados</h3>
-      <p>Os produtos possuem links de afiliados. Ao comprar por eles você apoia o Nexo Achados sem custo extra.</p>
+      <p>Os produtos possuem links de afiliados. Ao comprar por eles você apoia o Nexo Achados sem custo extra. Prazo de entrega e frete são consultados no checkout da Shopee ou Mercado Livre.</p>
       <div class="aff-logos">
         <div class="aff-logo">Shopee</div>
         <div class="aff-logo">Mercado Livre</div>
@@ -578,7 +807,7 @@ button, input { font: inherit; color: inherit; }
 </section>
 
 <footer class="footer">
-  <p>Este site contém links de afiliados. Podemos receber comissão por compras realizadas através deles, sem custo adicional para você.</p>
+  <p>Este site contém links de afiliados. Podemos receber comissão por compras realizadas através deles, sem custo adicional para você. Preços e disponibilidade sujeitos a alteração nas lojas de origem.</p>
   <p class="copy">© 2026 Nexo Achados</p>
 </footer>
 
@@ -586,10 +815,23 @@ button, input { font: inherit; color: inherit; }
   <div class="modal" id="modal"></div>
 </div>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <script>
-const products = [
+/* ============================================================
+   NEXO ACHADOS
+   Camada de serviços preparada para Cloudflare Worker +
+   Shopee Open API (credenciais nunca no front-end)
+   ============================================================ */
+
+const FAVORITOS_KEY = "nexo_achados_favoritos";
+
+/** Catálogo inicial — produtos reais inseridos manualmente.
+ *  Links de busca Shopee (substitua pelos seus links de afiliado).
+ *  Preços aproximados de ofertas públicas recentes. */
+const CATALOGO_BASE = [
   {
-    id: 1,
+    id: "iphone-16-pro",
     title: "iPhone 16 Pro 128GB",
     cat: "Smartphones",
     spec: "Titânio Natural · A18 Pro",
@@ -597,11 +839,13 @@ const products = [
     old: 9999,
     tag: "Destaque",
     img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&h=600&fit=crop",
-    link: "https://www.mercadolivre.com.br",
-    info: "Chip A18 Pro, tela Super Retina XDR, câmera 48MP, design em titânio."
+    link: "https://shopee.com.br/search?keyword=iPhone%2016%20Pro%20128GB",
+    info: "Chip A18 Pro, tela Super Retina XDR, câmera 48MP, design em titânio.",
+    disponivel: true,
+    confirmed: true
   },
   {
-    id: 2,
+    id: "macbook-air-m3",
     title: "MacBook Air 13\" M3",
     cat: "Notebooks",
     spec: "8GB · 256GB · Midnight",
@@ -609,11 +853,13 @@ const products = [
     old: 9499,
     tag: "Oferta",
     img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&h=600&fit=crop",
-    link: "https://www.mercadolivre.com.br",
-    info: "Chip Apple M3, tela Liquid Retina 13.6\", até 18h de bateria."
+    link: "https://shopee.com.br/search?keyword=MacBook%20Air%2013%20M3",
+    info: "Chip Apple M3, tela Liquid Retina 13.6\", até 18h de bateria.",
+    disponivel: true,
+    confirmed: true
   },
   {
-    id: 3,
+    id: "iphone-15-pro-max",
     title: "iPhone 15 Pro Max 256GB",
     cat: "Smartphones",
     spec: "Titânio Azul · A17 Pro",
@@ -621,11 +867,13 @@ const products = [
     old: 9499,
     tag: "Premium",
     img: "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600&h=600&fit=crop",
-    link: "https://shopee.com.br",
-    info: "Chip A17 Pro, Action Button, zoom óptico 5x, titanium."
+    link: "https://shopee.com.br/search?keyword=iPhone%2015%20Pro%20Max%20256GB",
+    info: "Chip A17 Pro, Action Button, zoom óptico 5x, titanium.",
+    disponivel: true,
+    confirmed: true
   },
   {
-    id: 4,
+    id: "macbook-pro-m3",
     title: "MacBook Pro 14\" M3 Pro",
     cat: "Notebooks",
     spec: "18GB · 512GB · Space Black",
@@ -633,11 +881,13 @@ const products = [
     old: 16999,
     tag: "Pro",
     img: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=600&fit=crop",
-    link: "https://www.mercadolivre.com.br",
-    info: "Chip M3 Pro, tela Liquid Retina XDR, até 22h de bateria."
+    link: "https://shopee.com.br/search?keyword=MacBook%20Pro%2014%20M3%20Pro",
+    info: "Chip M3 Pro, tela Liquid Retina XDR, até 22h de bateria.",
+    disponivel: true,
+    confirmed: true
   },
   {
-    id: 5,
+    id: "iphone-16",
     title: "iPhone 16 128GB",
     cat: "Smartphones",
     spec: "Preto · A18 · Camera Control",
@@ -645,11 +895,13 @@ const products = [
     old: 6799,
     tag: "",
     img: "https://images.unsplash.com/photo-1556656793-08538906a9f8?w=600&h=600&fit=crop",
-    link: "https://shopee.com.br",
-    info: "Chip A18, Camera Control, tela 6.1\", USB-C."
+    link: "https://shopee.com.br/search?keyword=iPhone%2016%20128GB",
+    info: "Chip A18, Camera Control, tela 6.1\", USB-C.",
+    disponivel: true,
+    confirmed: true
   },
   {
-    id: 6,
+    id: "macbook-air-15",
     title: "MacBook Air 15\" M3",
     cat: "Notebooks",
     spec: "8GB · 256GB · Starlight",
@@ -657,11 +909,13 @@ const products = [
     old: 10999,
     tag: "Grande",
     img: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600&h=600&fit=crop",
-    link: "https://www.mercadolivre.com.br",
-    info: "Tela 15.3\", chip M3, design fino e leve."
+    link: "https://shopee.com.br/search?keyword=MacBook%20Air%2015%20M3",
+    info: "Tela 15.3\", chip M3, design fino e leve.",
+    disponivel: true,
+    confirmed: true
   },
   {
-    id: 7,
+    id: "iphone-15",
     title: "iPhone 15 128GB",
     cat: "Smartphones",
     spec: "Rosa · A16 · Dynamic Island",
@@ -669,11 +923,13 @@ const products = [
     old: 5299,
     tag: "Achado",
     img: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=600&h=600&fit=crop",
-    link: "https://shopee.com.br",
-    info: "Chip A16 Bionic, Dynamic Island, câmera 48MP."
+    link: "https://shopee.com.br/search?keyword=iPhone%2015%20128GB",
+    info: "Chip A16 Bionic, Dynamic Island, câmera 48MP.",
+    disponivel: true,
+    confirmed: true
   },
   {
-    id: 8,
+    id: "mac-mini-m2",
     title: "Mac mini M2",
     cat: "Desktops",
     spec: "8GB · 256GB · Compacto",
@@ -681,55 +937,161 @@ const products = [
     old: 4999,
     tag: "",
     img: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&h=600&fit=crop",
-    link: "https://www.mercadolivre.com.br",
-    info: "Desktop compacto com chip M2, desempenho alto e silencioso."
+    link: "https://shopee.com.br/search?keyword=Mac%20mini%20M2",
+    info: "Desktop compacto com chip M2, desempenho alto e silencioso.",
+    disponivel: false,
+    confirmed: true
   }
 ];
 
-const grid = document.getElementById("grid");
-const searchInput = document.getElementById("search");
-const searchWrap = document.getElementById("searchWrap");
-const btnClear = document.getElementById("btnClear");
-const countEl = document.getElementById("count");
-const modalBg = document.getElementById("modalBg");
-const modal = document.getElementById("modal");
+/* ---------- Camada de serviços (futuro Worker) ---------- */
+const Servicos = {
+  /**
+   * Futuramente: Cloudflare Worker + Shopee Open API
+   * (AppID / Secret ficam apenas no backend)
+   */
+  async buscarCatalogoRemoto() {
+    // const res = await fetch("https://seu-worker.workers.dev/catalogo");
+    // return await res.json();
+    return null;
+  }
+};
 
-function formatPrice(v) {
+/* ---------- Estado ---------- */
+let produtos = [];
+let favoritos = new Set();
+let categoriaAtual = "todos";
+let termoBusca = "";
+let ordenacao = "relevancia";
+let visualizacao = "todos";
+
+/* ---------- Funções independentes exigidas ---------- */
+
+function carregarProdutos() {
+  produtos = CATALOGO_BASE.map(p => ({ ...p }));
+  return produtos;
+}
+
+function carregarFavoritos() {
+  try {
+    const raw = localStorage.getItem(FAVORITOS_KEY);
+    favoritos = new Set(raw ? JSON.parse(raw) : []);
+  } catch {
+    favoritos = new Set();
+  }
+}
+
+function salvarFavoritos() {
+  localStorage.setItem(FAVORITOS_KEY, JSON.stringify([...favoritos]));
+}
+
+function adicionarFavorito(id) {
+  favoritos.add(id);
+  salvarFavoritos();
+  mostrarToast("Adicionado aos favoritos");
+}
+
+function removerFavorito(id) {
+  favoritos.delete(id);
+  salvarFavoritos();
+  mostrarToast("Removido dos favoritos");
+}
+
+function filtrarProdutos(lista, categoria) {
+  if (!categoria || categoria === "todos") return lista;
+  return lista.filter(p => p.cat === categoria);
+}
+
+function pesquisarProdutos(lista, termo) {
+  if (!termo || !termo.trim()) return lista;
+  const q = termo.trim().toLowerCase();
+  return lista.filter(p =>
+    p.title.toLowerCase().includes(q) ||
+    p.cat.toLowerCase().includes(q) ||
+    (p.spec && p.spec.toLowerCase().includes(q)) ||
+    (p.tag && p.tag.toLowerCase().includes(q))
+  );
+}
+
+function ordenarProdutos(lista, criterio) {
+  const arr = [...lista];
+  switch (criterio) {
+    case "preco-asc":  return arr.sort((a, b) => a.price - b.price);
+    case "preco-desc": return arr.sort((a, b) => b.price - a.price);
+    case "nome-asc":   return arr.sort((a, b) => a.title.localeCompare(b.title, "pt-BR"));
+    case "nome-desc":  return arr.sort((a, b) => b.title.localeCompare(a.title, "pt-BR"));
+    default:           return arr;
+  }
+}
+
+function obterProdutosVisiveis() {
+  let lista = produtos;
+  if (visualizacao === "favoritos") {
+    lista = lista.filter(p => favoritos.has(p.id));
+  }
+  lista = filtrarProdutos(lista, categoriaAtual);
+  lista = pesquisarProdutos(lista, termoBusca);
+  lista = ordenarProdutos(lista, ordenacao);
+  return lista;
+}
+
+function formatarPreco(v) {
   return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
-function discount(oldP, price) {
+function calcularDesconto(oldP, price) {
   if (!oldP || oldP <= price) return 0;
   return Math.round(((oldP - price) / oldP) * 100);
 }
 
-function render(list) {
-  countEl.textContent = list.length + (list.length === 1 ? " item" : " itens");
-  if (!list.length) {
-    grid.innerHTML = `<div class="empty">Nenhum produto encontrado.</div>`;
+function renderizarProdutos() {
+  const grid = document.getElementById("grid");
+  const countEl = document.getElementById("count");
+  const titleEl = document.getElementById("sectionTitle");
+  const lista = obterProdutosVisiveis();
+
+  countEl.textContent = lista.length + (lista.length === 1 ? " item" : " itens");
+  titleEl.textContent = visualizacao === "favoritos" ? "Seus favoritos" : "Produtos em destaque";
+
+  if (!lista.length) {
+    grid.innerHTML = visualizacao === "favoritos"
+      ? `<div class="empty"><strong>Nenhum favorito ainda</strong>Toque no coração dos produtos para salvá-los aqui.</div>`
+      : `<div class="empty"><strong>Nenhum produto encontrado</strong>Tente outra busca ou categoria.</div>`;
     return;
   }
-  grid.innerHTML = list.map(p => {
-    const disc = discount(p.old, p.price);
+
+  grid.innerHTML = lista.map(p => {
+    const isFav = favoritos.has(p.id);
+    const disc = calcularDesconto(p.old, p.price);
+    const precoHtml = p.confirmed
+      ? `<span class="card-price">${formatarPreco(p.price)}</span>
+         ${p.old ? `<span class="card-old">${formatarPreco(p.old)}</span>` : ""}
+         ${disc ? `<span class="card-discount">-${disc}%</span>` : ""}`
+      : `<span style="font-size:13px;color:var(--muted)">Preço sob consulta</span>`;
+
     return `
-    <article class="card">
+    <article class="card ${p.disponivel ? "" : "unavailable"}" data-id="${p.id}">
       <div class="card-img">
         ${p.tag ? `<span class="card-tag">${p.tag}</span>` : ""}
-        <img src="${p.img}" alt="${p.title}" loading="lazy" onerror="this.src='https://placehold.co/600x600/e2e8f0/64748b?text=Produto'">
+        <button type="button" class="card-fav ${isFav ? "active" : ""}" data-action="fav" data-id="${p.id}" aria-label="${isFav ? "Remover dos favoritos" : "Adicionar aos favoritos"}">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <img src="${p.img}" alt="${escapeHtml(p.title)}" loading="lazy" onerror="this.src='https://placehold.co/600x600/e2e8f0/64748b?text=Produto'">
       </div>
       <div class="card-body">
-        <div class="card-cat">${p.cat}</div>
-        <h3 class="card-title">${p.title}</h3>
-        <div class="card-spec">${p.spec}</div>
-        <div class="card-price-row">
-          <span class="card-price">${formatPrice(p.price)}</span>
-          ${p.old ? `<span class="card-old">${formatPrice(p.old)}</span>` : ""}
-          ${disc ? `<span class="card-discount">-${disc}%</span>` : ""}
-        </div>
+        <div class="card-cat">${escapeHtml(p.cat)}</div>
+        <h3 class="card-title">${escapeHtml(p.title)}</h3>
+        ${p.spec ? `<div class="card-spec">${escapeHtml(p.spec)}</div>` : ""}
+        <div class="card-price-row">${precoHtml}</div>
         <div class="card-act">
-          <a href="${p.link}" class="btn btn-buy" target="_blank" rel="noopener noreferrer">Comprar</a>
-          <button type="button" class="btn btn-info" data-id="${p.id}" aria-label="Mais informações">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <button type="button" class="btn btn-buy" data-action="oferta" data-id="${p.id}" ${p.disponivel ? "" : "disabled"}>
+            ${p.disponivel ? "Comprar" : "Indisponível"}
+          </button>
+          <button type="button" class="btn btn-share" data-action="share" data-id="${p.id}" aria-label="Compartilhar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+          </button>
+          <button type="button" class="btn btn-info" data-action="info" data-id="${p.id}" aria-label="Mais informações">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
           </button>
         </div>
       </div>
@@ -737,52 +1099,223 @@ function render(list) {
   }).join("");
 }
 
-function doSearch() {
-  const q = searchInput.value.trim().toLowerCase();
-  searchWrap.classList.toggle("has-value", q.length > 0);
-  if (!q) { render(products); return; }
-  const filtered = products.filter(p =>
-    p.title.toLowerCase().includes(q) ||
-    p.cat.toLowerCase().includes(q) ||
-    p.spec.toLowerCase().includes(q) ||
-    (p.tag && p.tag.toLowerCase().includes(q))
-  );
-  render(filtered);
+function renderizarFiltros() {
+  const container = document.getElementById("filters");
+  const cats = ["todos", ...new Set(produtos.map(p => p.cat))];
+  container.innerHTML = cats.map(c => {
+    const label = c === "todos" ? "Todos" : c;
+    return `<button type="button" class="filter-btn ${categoriaAtual === c ? "active" : ""}" data-cat="${c}">${label}</button>`;
+  }).join("");
 }
 
-searchInput.addEventListener("input", doSearch);
-btnClear.addEventListener("click", () => {
-  searchInput.value = "";
-  searchInput.focus();
-  doSearch();
-});
+function abrirOferta(id) {
+  const p = produtos.find(x => x.id === id);
+  if (!p || !p.disponivel) return;
+  // Direciona ao link de afiliado. Prazo de entrega consultado no checkout da Shopee.
+  window.open(p.link, "_blank", "noopener,noreferrer");
+}
 
-grid.addEventListener("click", e => {
-  const btn = e.target.closest("button[data-id]");
-  if (!btn) return;
-  e.preventDefault();
-  const p = products.find(x => x.id == btn.dataset.id);
+async function compartilharProduto(id) {
+  const p = produtos.find(x => x.id === id);
   if (!p) return;
+
+  const url = p.link;
+  const texto = `${p.title} — ${formatarPreco(p.price)} no Nexo Achados`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: p.title, text: texto, url });
+      return;
+    } catch (err) {
+      if (err.name === "AbortError") return;
+    }
+  }
+
+  try {
+    await navigator.clipboard.writeText(url);
+    mostrarToast("Link copiado!");
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = url;
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    mostrarToast("Link copiado!");
+  }
+}
+
+function abrirInfo(id) {
+  const p = produtos.find(x => x.id === id);
+  if (!p) return;
+  const modal = document.getElementById("modal");
+  const modalBg = document.getElementById("modalBg");
+  const disc = calcularDesconto(p.old, p.price);
+
   modal.innerHTML = `
-    <h3>${p.title}</h3>
-    <p>${p.info}</p>
+    <h3>${escapeHtml(p.title)}</h3>
+    <p>${escapeHtml(p.info || "")}</p>
     <div class="spec-list">
-      <div><span>Categoria</span> ${p.cat}</div>
-      <div><span>Specs</span> ${p.spec}</div>
-      <div><span>Preço</span> ${formatPrice(p.price)}${p.old ? ` · <s style="color:var(--muted)">${formatPrice(p.old)}</s>` : ""}</div>
+      <div><span>Categoria</span> ${escapeHtml(p.cat)}</div>
+      ${p.spec ? `<div><span>Specs</span> ${escapeHtml(p.spec)}</div>` : ""}
+      <div><span>Preço</span> ${p.confirmed ? formatarPreco(p.price) : "Sob consulta"}${p.old && p.confirmed ? ` · <s style="color:var(--muted)">${formatarPreco(p.old)}</s>` : ""}${disc ? ` · <span style="color:#059669">-${disc}%</span>` : ""}</div>
+      <div><span>Status</span> ${p.disponivel ? "Disponível" : "Indisponível"}</div>
     </div>
-    <a href="${p.link}" class="btn btn-buy" style="width:100%" target="_blank" rel="noopener noreferrer">Ir para a oferta</a>
+    ${p.disponivel
+      ? `<button type="button" class="btn btn-buy" style="width:100%" data-action="oferta" data-id="${p.id}">Ir para a oferta</button>`
+      : `<button type="button" class="btn btn-buy" style="width:100%" disabled>Indisponível</button>`}
     <button type="button" class="btn btn-info" style="width:100%;margin-top:8px;border-radius:999px;height:auto;padding:10px" id="closeModal">Fechar</button>
   `;
   modalBg.classList.add("on");
   document.getElementById("closeModal").onclick = () => modalBg.classList.remove("on");
-});
+}
 
-modalBg.addEventListener("click", e => {
-  if (e.target === modalBg) modalBg.classList.remove("on");
-});
+function mostrarToast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(mostrarToast._t);
+  mostrarToast._t = setTimeout(() => el.classList.remove("show"), 2400);
+}
 
-render(products);
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str || "";
+  return div.innerHTML;
+}
+
+function atualizarUI() {
+  renderizarFiltros();
+  renderizarProdutos();
+  document.querySelectorAll("[data-view]").forEach(el => {
+    el.classList.toggle("active", el.dataset.view === visualizacao);
+  });
+}
+
+/* ---------- Eventos ---------- */
+function initEventos() {
+  const searchInput = document.getElementById("search");
+  const searchWrap = document.getElementById("searchWrap");
+  const btnClear = document.getElementById("btnClear");
+  const sortSelect = document.getElementById("sort");
+  const btnMenu = document.getElementById("btnMenu");
+  const mobileNav = document.getElementById("mobileNav");
+  const grid = document.getElementById("grid");
+  const filters = document.getElementById("filters");
+  const modalBg = document.getElementById("modalBg");
+
+  searchInput.addEventListener("input", () => {
+    termoBusca = searchInput.value;
+    searchWrap.classList.toggle("has-value", termoBusca.length > 0);
+    renderizarProdutos();
+  });
+
+  btnClear.addEventListener("click", () => {
+    searchInput.value = "";
+    termoBusca = "";
+    searchWrap.classList.remove("has-value");
+    searchInput.focus();
+    renderizarProdutos();
+  });
+
+  sortSelect.addEventListener("change", () => {
+    ordenacao = sortSelect.value;
+    renderizarProdutos();
+  });
+
+  filters.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-cat]");
+    if (!btn) return;
+    categoriaAtual = btn.dataset.cat;
+    renderizarFiltros();
+    renderizarProdutos();
+  });
+
+  grid.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-action]");
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const action = btn.dataset.action;
+
+    if (action === "fav") {
+      if (favoritos.has(id)) removerFavorito(id);
+      else adicionarFavorito(id);
+      if (visualizacao === "favoritos") renderizarProdutos();
+      else {
+        btn.classList.toggle("active");
+        btn.setAttribute("aria-label", favoritos.has(id) ? "Remover dos favoritos" : "Adicionar aos favoritos");
+      }
+    } else if (action === "oferta") {
+      abrirOferta(id);
+    } else if (action === "share") {
+      compartilharProduto(id);
+    } else if (action === "info") {
+      abrirInfo(id);
+    }
+  });
+
+  // Delegação também no modal (botão "Ir para a oferta")
+  modalBg.addEventListener("click", (e) => {
+    if (e.target === modalBg) {
+      modalBg.classList.remove("on");
+      return;
+    }
+    const btn = e.target.closest("[data-action='oferta']");
+    if (btn) {
+      abrirOferta(btn.dataset.id);
+      modalBg.classList.remove("on");
+    }
+  });
+
+  document.querySelectorAll("[data-view]").forEach(el => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      visualizacao = el.dataset.view;
+      if (visualizacao === "todos") categoriaAtual = "todos";
+      mobileNav.classList.remove("open");
+      btnMenu.setAttribute("aria-expanded", "false");
+      atualizarUI();
+      document.getElementById("produtos").scrollIntoView({ behavior: "smooth" });
+    });
+  });
+
+  btnMenu.addEventListener("click", () => {
+    const open = mobileNav.classList.toggle("open");
+    btnMenu.setAttribute("aria-expanded", open);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".header") && mobileNav.classList.contains("open")) {
+      mobileNav.classList.remove("open");
+      btnMenu.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  document.getElementById("logoHome").addEventListener("click", (e) => {
+    e.preventDefault();
+    visualizacao = "todos";
+    categoriaAtual = "todos";
+    termoBusca = "";
+    searchInput.value = "";
+    searchWrap.classList.remove("has-value");
+    ordenacao = "relevancia";
+    sortSelect.value = "relevancia";
+    atualizarUI();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+/* ---------- Boot ---------- */
+function init() {
+  carregarProdutos();
+  carregarFavoritos();
+  initEventos();
+  atualizarUI();
+}
+
+init();
 </script>
 </body>
 </html>
