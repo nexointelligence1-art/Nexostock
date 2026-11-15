@@ -1,35 +1,188 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#F5F4F0">
+  <meta name="theme-color" content="#090710">
   <meta name="description" content="PlayStation 5 Slim Standard 1 TB — oferta no Mercado Livre por R$ 3.500,00.">
   <title>PlayStation 5 Slim Standard 1 TB — NEXO Achados</title>
   <style>
-    :root { color-scheme: light; --ink: #171717; --paper: #F5F4F0; --white: #FFFFFF; --champagne: #B7A58A; --sage: #8C9690; --line: #E8E7E3; --muted: #73736E; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); background: var(--paper); }
+    :root {
+      color-scheme: dark;
+      --bg: #090710;
+      --bg-strong: #110c18;
+      --card: rgba(18, 13, 28, 0.8);
+      --card-strong: rgba(29, 22, 40, 0.9);
+      --text: #F6EEFF;
+      --muted: rgba(230, 220, 244, 0.76);
+      --line: rgba(199,125,255,0.24);
+      --purple: #9D4EDD;
+      --purple-strong: #C77DFF;
+      --shadow: rgba(8, 6, 13, 0.7);
+      --button-text: #0F0A18;
+      --toggle-bg: rgba(255,255,255,0.08);
+      --toggle-dot: #F5F0FF;
+      --button-gradient: linear-gradient(135deg, #9D4EDD 0%, #C77DFF 100%);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    html[data-theme="light"] {
+      color-scheme: light;
+      --bg: #F4F2FA;
+      --bg-strong: #ece7f7;
+      --card: rgba(255, 255, 255, 0.9);
+      --card-strong: rgba(255,255,255,0.96);
+      --text: #141122;
+      --muted: #4c455d;
+      --line: rgba(123, 44, 191, 0.15);
+      --purple: #7B2CBF;
+      --purple-strong: #9D4EDD;
+      --shadow: rgba(73, 52, 95, 0.08);
+      --button-text: #FFFFFF;
+      --toggle-bg: rgba(22, 16, 35, 0.08);
+      --toggle-dot: #FFFFFF;
+      --button-gradient: linear-gradient(135deg, #7B2CBF 0%, #9D4EDD 100%);
+    }
+
     * { box-sizing: border-box; }
-    body { min-height: 100vh; margin: 0; padding: 24px; display: grid; place-items: center; -webkit-font-smoothing: antialiased; }
-    main { width: min(100%, 620px); padding: clamp(26px, 6vw, 48px); border: 1px solid var(--line); border-radius: 20px; background: var(--white); }
+    html, body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font);
+      background:
+        radial-gradient(circle at top, rgba(157,78,221,0.18), transparent 32%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-strong) 100%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
     a { color: inherit; }
-    .brand { display: inline-flex; gap: 7px; color: var(--ink); font-size: 14px; font-weight: 750; letter-spacing: -.04em; text-decoration: none; }
-    .brand span { color: var(--muted); font-weight: 450; }
-    .category { margin: 38px 0 10px; color: #857966; font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
-    h1 { margin: 0 0 13px; font-size: clamp(27px, 6vw, 38px); line-height: 1.12; letter-spacing: -.055em; }
+    body {
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    main {
+      width: min(100%, 620px);
+      padding: clamp(26px, 6vw, 48px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(180deg, var(--card), var(--card-strong));
+      box-shadow: 0 28px 80px var(--shadow);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+    }
+    .brand {
+      display: inline-flex;
+      gap: 7px;
+      color: var(--purple-strong);
+      font-size: 14px;
+      font-weight: 750;
+      letter-spacing: -.04em;
+      text-decoration: none;
+      text-shadow: 0 0 18px rgba(199,125,255,0.25);
+    }
+    .brand span { color: var(--text); font-weight: 450; }
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 26px;
+    }
+    .theme-toggle {
+      position: relative;
+      width: 56px;
+      height: 30px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--toggle-bg);
+      cursor: pointer;
+    }
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--purple-strong);
+      outline-offset: 2px;
+    }
+    .theme-toggle-thumb {
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffffff, #ece2ff);
+      transition: transform .25s ease;
+      box-shadow: 0 8px 18px rgba(30,18,41,0.2);
+    }
+    .theme-toggle .icon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      opacity: 0.8;
+    }
+    .theme-toggle .icon.moon { left: 8px; }
+    .theme-toggle .icon.sun { right: 8px; }
+    html[data-theme="light"] .theme-toggle-thumb {
+      transform: translateX(25px);
+      background: linear-gradient(135deg, #ffffff, #f1e6ff);
+    }
+    .category {
+      margin: 0 0 10px;
+      color: var(--purple-strong);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0 0 13px;
+      font-size: clamp(27px, 6vw, 38px);
+      line-height: 1.12;
+      letter-spacing: -.055em;
+      color: var(--text);
+    }
     .details { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
-    .marketplace { margin: 24px 0 0; color: #71695d; font-size: 12px; font-weight: 600; }
-    .price { margin: 7px 0 25px; font-size: 32px; font-weight: 650; letter-spacing: -.05em; }
-    .buy { display: inline-flex; justify-content: center; width: 100%; padding: 15px 20px; border-radius: 999px; background: var(--ink); color: var(--white); font-size: 13px; font-weight: 600; text-decoration: none; transition: background .2s ease, transform .2s ease; }
-    .buy:hover { transform: translateY(-1px); background: #393833; }
-    .note { margin: 16px 0 0; color: var(--muted); font-size: 12px; text-align: center; }
-    a:focus-visible { outline: 2px solid var(--champagne); outline-offset: 4px; }
-    @media (max-width: 480px) { body { padding: 16px; } main { border-radius: 16px; } }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } }
+    .marketplace { margin: 24px 0 0; color: var(--muted); font-size: 12px; font-weight: 600; }
+    .price { margin: 7px 0 25px; font-size: 32px; font-weight: 650; letter-spacing: -.05em; color: var(--text); }
+    .buy {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 999px;
+      background: var(--button-gradient);
+      color: var(--button-text);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 12px 28px rgba(157, 78, 221, 0.28);
+    }
+    .note {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+    a:focus-visible { outline: 2px solid var(--purple-strong); outline-offset: 4px; }
+    @media (max-width: 480px) {
+      body { padding: 16px; }
+      main { border-radius: 16px; }
+      .top-bar { margin-bottom: 18px; }
+    }
   </style>
 </head>
 <body>
   <main>
-    <a class="brand" href="./" aria-label="NEXO Achados — início">NEXO <span>Achados</span></a>
+    <div class="top-bar">
+      <a class="brand" href="./" aria-label="NEXO Achados — início">NEXO <span>Achados</span></a>
+      <button class="theme-toggle" type="button" aria-label="Alternar entre modo escuro e claro" aria-pressed="false">
+        <span class="icon moon">☾</span>
+        <span class="icon sun">☀</span>
+        <span class="theme-toggle-thumb"></span>
+      </button>
+    </div>
     <p class="category">Consoles</p>
     <h1>Console PlayStation 5 Sony Slim Standard 1 TB</h1>
     <p class="details">Produto novo · Versão Standard · Anúncio internacional no Mercado Livre.</p>
@@ -38,5 +191,28 @@
     <a class="buy" href="https://meli.la/2vc9uPn" target="_blank" rel="noopener noreferrer">Ver oferta no Mercado Livre</a>
     <p class="note">Preço e disponibilidade podem mudar. Confira as condições diretamente no anúncio.</p>
   </main>
+
+  <script>
+    (function () {
+      const root = document.documentElement;
+      const storageKey = 'nexo-theme';
+      const savedTheme = localStorage.getItem(storageKey);
+      const preferredTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      const activeTheme = savedTheme || preferredTheme;
+      root.setAttribute('data-theme', activeTheme);
+
+      document.querySelectorAll('.theme-toggle').forEach((button) => {
+        button.setAttribute('aria-pressed', String(activeTheme === 'light'));
+        button.addEventListener('click', () => {
+          const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', nextTheme);
+          localStorage.setItem(storageKey, nextTheme);
+          button.setAttribute('aria-pressed', String(nextTheme === 'light'));
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
+
+
