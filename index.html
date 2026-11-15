@@ -9,162 +9,181 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #101014;
-      --panel: #1b1a20;
-      --panel-2: #24232b;
-      --line: #393740;
+      --bg: #111015;
+      --surface: #1d1b23;
+      --surface-raised: #28252f;
+      --surface-soft: #23212a;
+      --stroke: #3b3743;
       --text: #f7f5fa;
-      --muted: #a7a3ad;
-      --purple: #a42cff;
-      --purple-light: #c678ff;
-      --sidebar: 228px;
+      --muted: #a7a2ae;
+      --subtle: #77727f;
+      --purple: #a52cff;
+      --purple-2: #7625db;
+      --lavender: #ce8aff;
+      --sidebar: 208px;
       --radius: 16px;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; scroll-padding-top: 85px; -webkit-text-size-adjust: 100%; }
-    body { min-width: 320px; margin: 0; color: var(--text); background: radial-gradient(ellipse at 50% 110%, rgba(116,34,170,.2), transparent 42%), var(--bg); -webkit-font-smoothing: antialiased; }
+    body { min-width: 320px; margin: 0; color: var(--text); background: radial-gradient(ellipse at 70% 90%, rgba(116,34,170,.15), transparent 48%), var(--bg); -webkit-font-smoothing: antialiased; }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
-    .topbar { position: sticky; top: 0; z-index: 20; height: 66px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 30px; border-bottom: 1px solid rgba(255,255,255,.09); background: rgba(18,17,22,.94); backdrop-filter: blur(18px); }
+    .topbar { position: sticky; top: 0; z-index: 20; height: 66px; padding: 0 max(26px, calc((100vw - 1380px) / 2)); display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid rgba(255,255,255,.09); background: rgba(18,17,22,.95); backdrop-filter: blur(18px); }
     .brand { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; font-size: 16px; font-weight: 750; letter-spacing: -.035em; }
-    .brand-mark { width: 26px; height: 26px; display: grid; place-items: center; border: 1px solid rgba(191,104,255,.55); border-radius: 8px; color: var(--purple-light); font-size: 13px; font-weight: 850; box-shadow: 0 0 16px rgba(164,44,255,.22); }
-    .desktop-nav { height: 100%; display: flex; align-items: center; gap: 25px; }
-    .desktop-nav a { position: relative; height: 100%; display: inline-flex; align-items: center; color: #c4c0c9; font-size: 12px; }
+    .brand-mark { width: 27px; height: 27px; display: grid; place-items: center; border: 1px solid rgba(191,104,255,.58); border-radius: 8px; color: var(--lavender); font-size: 13px; font-weight: 850; box-shadow: 0 0 17px rgba(164,44,255,.2); }
+    .desktop-nav { height: 100%; display: flex; align-items: center; gap: clamp(15px, 2.4vw, 32px); }
+    .desktop-nav a { position: relative; height: 100%; display: inline-flex; align-items: center; color: #c4c0c9; font-size: 12px; transition: color .18s; }
     .desktop-nav a:hover, .desktop-nav a.active { color: white; }
     .desktop-nav a.active::after { position: absolute; right: 0; bottom: 0; left: 0; height: 2px; content: ""; background: var(--purple); box-shadow: 0 0 10px var(--purple); }
-    .top-actions { display: flex; align-items: center; gap: 10px; }
-    .icon-button { width: 35px; height: 35px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 10px; background: #222128; color: white; font-size: 16px; }
-    .layout { width: min(1440px, 100%); min-height: calc(100vh - 66px); margin: auto; display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); }
-    .sidebar { position: sticky; top: 66px; height: calc(100vh - 66px); min-height: 550px; padding: 25px 15px; border-right: 1px solid rgba(255,255,255,.08); background: rgba(22,21,27,.77); }
-    .side-label { margin: 10px 11px 9px; color: #77737e; font-size: 9px; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; }
-    .side-link { min-height: 39px; margin: 3px 0; padding: 0 11px; display: flex; align-items: center; gap: 11px; border-radius: 9px; color: #c9c5ce; font-size: 12px; transition: background .18s, color .18s; }
-    .side-link:hover, .side-link.active { background: #34313b; color: white; }
+    .header-tools { display: flex; align-items: center; gap: 9px; }
+    .search { width: clamp(120px, 17vw, 205px); height: 34px; padding: 0 10px; display: flex; align-items: center; gap: 8px; border: 1px solid #3c3942; border-radius: 8px; background: #26242b; color: #a9a4af; font-size: 10px; }
+    .search span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .round-tool { width: 33px; height: 33px; display: grid; place-items: center; border: 1px solid #3c3942; border-radius: 9px; background: #26242b; color: #e9e5ed; font-size: 14px; }
+    .app { width: min(1380px, 100%); min-height: calc(100vh - 66px); margin-inline: auto; display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); }
+    .sidebar { position: sticky; top: 66px; height: calc(100vh - 66px); min-height: 570px; padding: 22px 13px; border-right: 1px solid rgba(255,255,255,.08); background: rgba(22,21,27,.72); }
+    .sidebar-search { height: 35px; margin: 0 3px 20px; padding: 0 10px; display: flex; align-items: center; gap: 8px; border: 1px solid #3d3944; border-radius: 8px; background: #26242b; color: #8e8995; font-size: 10px; }
+    .side-label { margin: 18px 10px 8px; color: var(--subtle); font-size: 9px; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; }
+    .side-link { min-height: 37px; margin: 3px 0; padding: 0 10px; display: flex; align-items: center; gap: 10px; border-radius: 8px; color: #c9c5ce; font-size: 11px; transition: background .18s, color .18s; }
+    .side-link:hover, .side-link.active { background: #35323d; color: white; }
     .side-link.active { box-shadow: inset 2px 0 var(--purple); }
-    .side-icon { width: 16px; color: #c076f4; text-align: center; font-size: 14px; }
-    .side-chevron { margin-left: auto; color: #77737e; }
-    .sidebar-note { margin: 26px 4px 0; padding: 15px 13px; border: 1px solid #44334f; border-radius: 12px; background: linear-gradient(140deg, rgba(119,40,171,.2), rgba(38,35,45,.4)); }
-    .sidebar-note strong { display: block; margin-bottom: 5px; font-size: 12px; }
-    .sidebar-note p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
-    .main { min-width: 0; padding: 25px clamp(18px, 3vw, 38px) 42px; }
-    .main-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 19px; }
-    .main-heading h1 { margin: 0; font-size: clamp(22px, 3vw, 29px); font-weight: 700; letter-spacing: -.055em; }
-    .main-heading p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
-    .welcome-actions { display: flex; gap: 8px; }
-    .welcome-actions .icon-button { border-radius: 50%; }
-    .dashboard { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(210px, .92fr); gap: 13px; }
-    .panel { min-width: 0; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(145deg, rgba(38,36,45,.96), rgba(26,25,31,.97)); box-shadow: 0 12px 38px rgba(0,0,0,.18); }
-    .featured { padding: 17px 17px 13px; }
-    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 13px; }
-    .panel-head h2, .panel-head h3 { margin: 0; font-size: 13px; font-weight: 650; letter-spacing: -.02em; }
-    .panel-head a { color: var(--purple-light); font-size: 10px; }
-    .featured-items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .side-icon { width: 16px; color: #c47af5; text-align: center; font-size: 14px; }
+    .side-chevron { margin-left: auto; color: #77727f; }
+    .side-count { margin-left: auto; padding: 2px 6px; border-radius: 9px; background: #3b2b49; color: #d6a5ff; font-size: 8px; }
+    .sidebar-note { margin: 23px 4px 0; padding: 13px 11px; border: 1px solid #44334f; border-radius: 11px; background: linear-gradient(140deg, rgba(119,40,171,.2), rgba(38,35,45,.4)); }
+    .sidebar-note strong { display: block; margin-bottom: 4px; font-size: 11px; }
+    .sidebar-note p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
+    .main { min-width: 0; padding: 24px clamp(18px, 2.5vw, 34px) 42px; }
+    .page-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 17px; }
+    .page-heading h1 { margin: 0; font-size: clamp(20px, 2.3vw, 26px); font-weight: 680; letter-spacing: -.055em; }
+    .page-heading p { margin: 4px 0 0; color: var(--muted); font-size: 10px; }
+    .page-tools { display: flex; gap: 7px; }
+    .page-tools .round-tool { border-radius: 50%; }
+    .dashboard { display: grid; grid-template-columns: minmax(0, 1.52fr) minmax(210px, .9fr); gap: 12px; }
+    .panel { min-width: 0; border: 1px solid var(--stroke); border-radius: var(--radius); background: linear-gradient(145deg, rgba(39,37,46,.97), rgba(27,26,32,.98)); box-shadow: 0 12px 38px rgba(0,0,0,.19); }
+    .featured { padding: 15px 15px 12px; }
+    .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+    .panel-heading h2, .panel-heading h3 { margin: 0; font-size: 12px; font-weight: 650; letter-spacing: -.02em; }
+    .panel-heading a { color: var(--lavender); font-size: 9px; }
+    .featured-items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
     .featured-item { min-width: 0; text-align: center; }
-    .product-thumb { position: relative; overflow: hidden; aspect-ratio: 1 / .86; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.06); border-radius: 11px; background: linear-gradient(145deg, #36343e, #25232b); }
-    .product-thumb img { width: 100%; height: 100%; position: absolute; inset: 0; object-fit: cover; }
-    .product-thumb .emoji { font-size: 43px; filter: drop-shadow(0 9px 12px rgba(0,0,0,.32)); }
-    .featured-item:first-child .product-thumb { background: linear-gradient(145deg, #35323d, #24222a); }
-    .featured-item:nth-child(2) .product-thumb { background: linear-gradient(140deg, #ad45ff, #6320bd); }
-    .featured-item:nth-child(3) .product-thumb { background: linear-gradient(140deg, #41404a, #292831); }
-    .featured-item p { overflow: hidden; margin: 7px 0 0; color: #e6e2eb; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+    .thumb { position: relative; overflow: hidden; aspect-ratio: 1 / .83; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.06); border-radius: 10px; background: linear-gradient(145deg, #36333d, #24222a); }
+    .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .thumb-art { display: grid; width: 70%; height: 74%; place-items: center; border-radius: 10px; background: linear-gradient(145deg, #37333e, #1d2027); color: #d9e8ff; font-size: 34px; text-shadow: 0 7px 18px rgba(0,0,0,.5); }
+    .featured-item:nth-child(2) .thumb { background: linear-gradient(140deg, #aa3cf1, #6220ae); }
+    .featured-item:nth-child(2) .thumb-art { background: linear-gradient(140deg, #c45cff, #7824be); color: #19121e; }
+    .featured-item:nth-child(3) .thumb { background: linear-gradient(140deg, #41404a, #292831); }
+    .featured-item:nth-child(3) .thumb-art { background: linear-gradient(145deg, #474751, #23232a); color: #d1d1d8; }
+    .featured-item p { overflow: hidden; margin: 6px 0 0; color: #e6e2eb; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
     .featured-item small { color: #99949f; font-size: 8px; }
-    .dots { display: flex; justify-content: center; gap: 5px; margin-top: 11px; }
-    .dots i { width: 5px; height: 5px; border-radius: 50%; background: #625e68; }
-    .dots i:first-child { background: var(--purple-light); box-shadow: 0 0 8px var(--purple); }
-    .promo { position: relative; overflow: hidden; min-height: 160px; padding: 18px; display: flex; flex-direction: column; align-items: flex-start; }
-    .promo::after { position: absolute; right: -24px; bottom: -34px; width: 125px; height: 125px; content: ""; border: 1px solid rgba(195,95,255,.45); border-radius: 50%; box-shadow: 0 0 35px rgba(164,44,255,.42), inset 0 0 26px rgba(164,44,255,.19); }
-    .promo h2 { max-width: 180px; margin: 0 0 7px; font-size: 15px; font-weight: 650; }
-    .promo p { max-width: 180px; margin: 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
-    .button { position: relative; z-index: 1; min-height: 33px; margin-top: auto; padding: 0 13px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 8px; background: linear-gradient(100deg, #ae24ff, #7224df); color: white; font-size: 10px; font-weight: 700; box-shadow: 0 5px 17px rgba(133,32,220,.3); transition: transform .18s, filter .18s; }
+    .carousel-controls { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 9px; }
+    .carousel-controls i { width: 5px; height: 5px; border-radius: 50%; background: #625e68; }
+    .carousel-controls i:first-child { background: var(--lavender); box-shadow: 0 0 8px var(--purple); }
+    .promo-column { display: grid; grid-template-rows: 1fr 1fr; gap: 11px; }
+    .promo { position: relative; overflow: hidden; min-height: 126px; padding: 15px; display: flex; flex-direction: column; align-items: flex-start; }
+    .promo::after { position: absolute; right: -25px; bottom: -42px; width: 120px; height: 120px; content: ""; border: 1px solid rgba(195,95,255,.4); border-radius: 50%; box-shadow: 0 0 30px rgba(164,44,255,.38), inset 0 0 22px rgba(164,44,255,.16); }
+    .promo h2 { position: relative; z-index: 1; max-width: 180px; margin: 0 0 5px; font-size: 13px; font-weight: 650; }
+    .promo p { position: relative; z-index: 1; max-width: 190px; margin: 0; color: var(--muted); font-size: 9px; line-height: 1.45; }
+    .button { position: relative; z-index: 1; min-height: 31px; margin-top: auto; padding: 0 12px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 0; border-radius: 8px; background: linear-gradient(100deg, #ad25fb, #7624db); color: white; font-size: 9px; font-weight: 700; box-shadow: 0 5px 17px rgba(133,32,220,.3); transition: transform .18s, filter .18s; }
     .button:hover { transform: translateY(-2px); filter: brightness(1.13); }
-    .lower-grid { display: grid; grid-template-columns: minmax(205px, .85fr) minmax(260px, 1.35fr) minmax(180px, .8fr); gap: 13px; margin-top: 13px; }
-    .quick-links, .calculator, .popular { padding: 15px; }
-    .quick-links .panel-head, .calculator .panel-head, .popular .panel-head { margin-bottom: 10px; }
-    .quick-link { min-height: 37px; display: flex; align-items: center; gap: 9px; border-bottom: 1px solid rgba(255,255,255,.055); color: #dbd7df; font-size: 10px; }
+    .promo.cart-promo { min-height: 90px; flex-direction: row; align-items: center; justify-content: space-between; }
+    .promo.cart-promo::after { width: 90px; height: 90px; right: -33px; bottom: -45px; }
+    .cart-glyph { color: var(--lavender); font-size: 22px; }
+    .utility-grid { display: grid; grid-template-columns: minmax(175px, .82fr) minmax(240px, 1.15fr) minmax(190px, .9fr); gap: 11px; margin-top: 11px; }
+    .utility { min-width: 0; padding: 13px; }
+    .utility .panel-heading { margin-bottom: 9px; }
+    .quick-link { min-height: 32px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,.055); color: #dbd7df; font-size: 9px; }
     .quick-link:last-child { border-bottom: 0; }
-    .quick-link .side-icon { font-size: 13px; }
-    .quick-link span:last-child { margin-left: auto; color: #8d8794; }
-    .calculator-display { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
-    .calculator-display div { min-height: 28px; padding: 5px 8px; border: 1px solid #3c3944; border-radius: 6px; background: #24222a; color: #9e99a5; font-size: 9px; text-align: right; }
-    .calculator-display div:last-child { color: white; }
-    .calc-tabs { display: flex; gap: 5px; margin-bottom: 7px; }
-    .calc-tabs span { flex: 1; padding: 5px 3px; border-radius: 5px; background: #33313a; color: #b7b2bf; font-size: 8px; text-align: center; }
+    .quick-link .side-icon { font-size: 12px; }
+    .quick-link > span:last-child { margin-left: auto; color: #8d8794; }
+    .calc-display { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 7px; }
+    .calc-display div { min-height: 27px; padding: 5px 7px; border: 1px solid #3c3944; border-radius: 6px; background: #24222a; color: #a09aa7; font-size: 8px; text-align: right; }
+    .calc-display div:last-child { color: white; }
+    .calc-tabs { display: flex; gap: 4px; margin-bottom: 6px; }
+    .calc-tabs span { flex: 1; padding: 4px 2px; border-radius: 5px; background: #33313a; color: #b7b2bf; font-size: 7px; text-align: center; }
     .calc-tabs span:first-child { background: #4a4652; color: white; }
     .calc-keys { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
-    .calc-keys span { min-height: 23px; display: grid; place-items: center; border-radius: 5px; background: #34323a; color: #f1eef5; font-size: 9px; }
+    .calc-keys span { min-height: 22px; display: grid; place-items: center; border-radius: 5px; background: #34323a; color: #f1eef5; font-size: 8px; }
     .calc-keys span:nth-child(5n) { background: #8e2ce7; }
-    .popular-empty { min-height: 136px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; color: #a39daa; text-align: center; }
-    .popular-empty .sparkle { color: var(--purple-light); font-size: 25px; }
-    .popular-empty p { max-width: 150px; margin: 0; font-size: 9px; line-height: 1.5; }
-    .product-section { margin-top: 22px; scroll-margin-top: 85px; }
-    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 14px; margin-bottom: 11px; }
-    .section-heading h2 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -.04em; }
-    .section-heading p { margin: 4px 0 0; color: var(--muted); font-size: 10px; }
-    .section-heading > span { color: #98939e; font-size: 9px; }
-    .offer-card { overflow: hidden; display: grid; grid-template-columns: minmax(130px, .7fr) 1.3fr; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(120deg, #26242d, #1d1b22); }
-    .offer-image { position: relative; min-height: 165px; overflow: hidden; background: linear-gradient(140deg, #383541, #222129); }
-    .offer-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .offer-content { padding: 16px 19px; display: flex; flex-direction: column; align-items: flex-start; }
-    .offer-label { margin: 0 0 7px; color: var(--purple-light); font-size: 9px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
-    .offer-content h3 { margin: 0; font-size: 16px; font-weight: 650; letter-spacing: -.035em; }
-    .offer-content p { margin: 6px 0 10px; color: var(--muted); font-size: 9px; }
-    .offer-bottom { width: 100%; margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .offer-price { font-size: 17px; font-weight: 750; }
-    .offer-bottom .button { margin: 0; }
-    .empty-state { padding: 16px; border: 1px dashed #45414b; border-radius: 12px; color: var(--muted); font-size: 10px; }
-    .empty-state strong { display: block; margin-bottom: 4px; color: var(--text); font-size: 11px; }
-    .disclosure { margin-top: 22px; padding: 12px 14px; border: 1px solid rgba(255,255,255,.07); border-radius: 10px; color: #aaa5b0; font-size: 9px; line-height: 1.5; }
-    footer { padding: 18px 0 0; color: #77727e; font-size: 9px; text-align: center; }
+    .insight { min-height: 146px; display: flex; flex-direction: column; }
+    .insight-copy { color: #a39daa; font-size: 8px; }
+    .chart { width: 100%; height: 82px; margin-top: auto; overflow: visible; }
+    .chart-grid { stroke: #494550; stroke-width: 1; }
+    .chart-area { fill: url(#chartFill); }
+    .chart-line { fill: none; stroke: #bd52ff; stroke-width: 2; filter: drop-shadow(0 0 4px rgba(189,82,255,.6)); }
+    .chart-labels { display: flex; justify-content: space-between; margin-top: 3px; color: #85808c; font-size: 7px; }
+    .catalog { margin-top: 22px; scroll-margin-top: 82px; }
+    .catalog-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .catalog-head h2 { margin: 0; font-size: 16px; font-weight: 680; letter-spacing: -.04em; }
+    .catalog-head p { margin: 4px 0 0; color: var(--muted); font-size: 9px; }
+    .market-badge { padding: 6px 9px; border-radius: 999px; background: #292630; color: #c6c0cd; font-size: 8px; }
+    .catalog-body { display: grid; grid-template-columns: 155px minmax(0, 1fr); gap: 11px; }
+    .catalog-menu { padding: 11px; }
+    .catalog-menu h3 { margin: 2px 0 8px; color: #96909c; font-size: 8px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .catalog-menu a { min-height: 29px; display: flex; align-items: center; gap: 7px; border-bottom: 1px solid rgba(255,255,255,.05); color: #c5c0ca; font-size: 9px; }
+    .catalog-menu a:last-child { border-bottom: 0; }
+    .catalog-menu a span { color: var(--lavender); }
+    .product-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
+    .product-card { overflow: hidden; min-width: 0; border: 1px solid #403c47; border-radius: 13px; background: linear-gradient(145deg, #2a2831, #211f26); }
+    .product-image { position: relative; overflow: hidden; aspect-ratio: 1 / .83; display: grid; place-items: center; background: linear-gradient(145deg, #393641, #24222a); }
+    .product-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .product-image .placeholder { color: #d5b9ff; font-size: 40px; }
+    .product-info { padding: 10px; }
+    .product-info h3 { overflow: hidden; margin: 0; font-size: 9px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+    .product-info p { margin: 4px 0 8px; color: #a6a0ad; font-size: 8px; }
+    .product-info .button { width: 100%; min-height: 29px; margin: 0; }
+    .empty-state { padding: 12px; border: 1px dashed #45414b; border-radius: 11px; color: var(--muted); font-size: 9px; }
+    .empty-state strong { display: block; margin-bottom: 3px; color: var(--text); font-size: 10px; }
+    .disclosure { margin-top: 18px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.07); border-radius: 9px; color: #aaa5b0; font-size: 8px; line-height: 1.5; }
+    footer { padding: 14px 0 0; color: #77727e; font-size: 8px; text-align: center; }
     .mobile-nav { display: none; }
-    a:focus-visible, button:focus-visible { outline: 2px solid var(--purple-light); outline-offset: 3px; }
-    @media (max-width: 980px) {
-      :root { --sidebar: 190px; }
-      .desktop-nav { gap: 16px; }
-      .lower-grid { grid-template-columns: minmax(170px, .9fr) minmax(220px, 1.1fr); }
-      .popular { grid-column: 1 / -1; }
-      .popular-empty { min-height: 80px; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--lavender); outline-offset: 3px; }
+    @media (max-width: 1050px) {
+      :root { --sidebar: 185px; }
+      .desktop-nav { gap: 14px; }
+      .utility-grid { grid-template-columns: minmax(165px, .9fr) minmax(210px, 1.1fr); }
+      .insight { grid-column: 1 / -1; min-height: 120px; }
+      .chart { height: 65px; }
+      .header-tools .search { width: 130px; }
     }
-    @media (max-width: 700px) {
-      .topbar { height: 58px; padding: 0 16px; }
-      .desktop-nav, .top-actions { display: none; }
-      .layout { min-height: calc(100vh - 58px); display: block; }
+    @media (max-width: 740px) {
+      .topbar { height: 58px; padding: 0 15px; }
+      .desktop-nav { display: none; }
+      .header-tools .search { width: 34px; padding: 0; justify-content: center; border-radius: 9px; }
+      .header-tools .search span:last-child { display: none; }
+      .app { min-height: calc(100vh - 58px); display: block; }
       .sidebar { display: none; }
-      .main { padding: 20px 15px 82px; }
-      .main-heading { margin-bottom: 16px; }
-      .main-heading h1 { font-size: 24px; }
-      .main-heading p { font-size: 10px; }
-      .welcome-actions { display: flex; }
-      .dashboard { grid-template-columns: 1fr; }
-      .featured { padding: 15px 13px 12px; }
-      .product-thumb { aspect-ratio: 1 / .9; }
-      .product-thumb .emoji { font-size: 36px; }
-      .promo { min-height: 138px; }
-      .promo h2, .promo p { max-width: 75%; }
-      .lower-grid { grid-template-columns: 1fr 1fr; }
-      .quick-links { grid-column: 1 / -1; }
-      .calculator { grid-column: 1; }
-      .popular { grid-column: 2; }
-      .product-section { margin-top: 25px; }
-      .offer-card { grid-template-columns: .8fr 1.2fr; }
-      .offer-image { min-height: 160px; }
-      .offer-content { padding: 14px; }
-      .offer-content h3 { font-size: 14px; }
-      .offer-bottom { align-items: flex-start; flex-direction: column; gap: 8px; }
-      .offer-bottom .button { min-height: 31px; }
-      .mobile-nav { position: fixed; right: 0; bottom: 0; left: 0; z-index: 30; min-height: 61px; padding: 6px 12px max(6px, env(safe-area-inset-bottom)); display: flex; justify-content: space-around; border-top: 1px solid #38353e; background: rgba(24,22,29,.97); backdrop-filter: blur(15px); }
-      .mobile-nav a { min-width: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #a9a4af; font-size: 8px; }
+      .main { padding: 18px 14px 82px; }
+      .page-heading { margin-bottom: 13px; }
+      .page-heading h1 { font-size: 22px; }
+      .dashboard { grid-template-columns: 1fr; gap: 10px; }
+      .featured { padding: 13px 12px 10px; }
+      .thumb { aspect-ratio: 1 / .85; }
+      .promo-column { grid-template-columns: 1fr 1fr; grid-template-rows: 128px; gap: 9px; }
+      .promo { min-height: 128px; padding: 12px; }
+      .promo h2 { font-size: 11px; }
+      .promo p { font-size: 8px; }
+      .promo.cart-promo { min-height: 128px; flex-direction: column; align-items: flex-start; }
+      .utility-grid { grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 9px; }
+      .quick-categories { grid-column: 1 / -1; }
+      .insight { grid-column: 1 / -1; }
+      .catalog-body { grid-template-columns: 1fr; }
+      .catalog-menu { display: none; }
+      .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .product-card.extra { display: none; }
+      .mobile-nav { position: fixed; right: 0; bottom: 0; left: 0; z-index: 30; min-height: 60px; padding: 5px 10px max(5px, env(safe-area-inset-bottom)); display: flex; justify-content: space-around; border-top: 1px solid #393540; background: rgba(24,22,29,.97); backdrop-filter: blur(15px); }
+      .mobile-nav a { min-width: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #a9a4af; font-size: 8px; }
       .mobile-nav a span:first-child { color: #c17af4; font-size: 16px; }
       .mobile-nav a.active { color: white; }
-      .mobile-nav a.active span:first-child { color: var(--purple-light); }
+      .mobile-nav a.active span:first-child { color: var(--lavender); }
     }
     @media (max-width: 390px) {
-      .main { padding-inline: 12px; }
-      .lower-grid { grid-template-columns: 1fr; }
-      .quick-links, .calculator, .popular { grid-column: 1; }
-      .popular-empty { min-height: 100px; }
-      .offer-card { grid-template-columns: 1fr; }
-      .offer-image { aspect-ratio: 1.6 / 1; min-height: 0; }
-      .offer-bottom { align-items: center; flex-direction: row; }
+      .main { padding-inline: 11px; }
+      .product-info { padding: 8px; }
+      .product-info h3 { font-size: 8px; }
+      .product-info .button { padding-inline: 6px; font-size: 8px; }
+      .utility { padding: 10px; }
+      .calc-keys { gap: 3px; }
     }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
   </style>
@@ -172,55 +191,58 @@
 <body>
   <header class="topbar">
     <a class="brand" href="#inicio" aria-label="NEXO Achados — início"><span class="brand-mark">N</span>NEXO Achados</a>
-    <nav class="desktop-nav" aria-label="Navegação principal"><a class="active" href="#inicio">Destaques</a><a href="#eletronicos">Eletrônicos</a><a href="#moda">Moda</a><a href="#casa">Casa</a><a href="#contato">Contato</a></nav>
-    <div class="top-actions"><button class="icon-button" type="button" aria-label="Pesquisar">⌕</button><a class="icon-button" href="#carrinho" aria-label="Carrinho">♧</a></div>
+    <nav class="desktop-nav" aria-label="Navegação principal"><a class="active" href="#destaques">Destaques</a><a href="#eletronicos">Eletrônicos</a><a href="#moda">Moda</a><a href="#casa">Casa</a><a href="#contato">Contato</a></nav>
+    <div class="header-tools"><div class="search" aria-label="Pesquisa visual"><span aria-hidden="true">⌕</span><span>Buscar produtos...</span></div><a class="round-tool" href="#carrinho" aria-label="Carrinho">♧</a></div>
   </header>
-  <div class="layout" id="inicio">
-    <aside class="sidebar" aria-label="Menu de categorias">
-      <p class="side-label">Menu</p>
-      <a class="side-link active" href="#inicio"><span class="side-icon">⌂</span>Início</a>
-      <a class="side-link" href="#destaques"><span class="side-icon">✧</span>Novidades</a>
+  <div class="app" id="inicio">
+    <aside class="sidebar" aria-label="Menu de navegação">
+      <div class="sidebar-search"><span aria-hidden="true">⌕</span>Buscar no catálogo</div>
+      <p class="side-label">Navegação</p>
+      <a class="side-link active" href="#destaques"><span class="side-icon">⌂</span>Início</a>
+      <a class="side-link" href="#destaques"><span class="side-icon">✧</span>Novidades <span class="side-count">NEW</span></a>
       <p class="side-label">Categorias</p>
       <a class="side-link" href="#eletronicos"><span class="side-icon">▱</span>Eletrônicos <span class="side-chevron">›</span></a>
       <a class="side-link" href="#eletronicos"><span class="side-icon">▯</span>Celulares</a>
       <a class="side-link" href="#eletronicos"><span class="side-icon">▣</span>Periféricos</a>
-      <a class="side-link" href="#eletronicos"><span class="side-icon">♬</span>Áudio</a>
+      <a class="side-link" href="#eletronicos"><span class="side-icon">♫</span>Áudio</a>
       <a class="side-link" href="#moda"><span class="side-icon">♧</span>Moda <span class="side-chevron">›</span></a>
       <a class="side-link" href="#casa"><span class="side-icon">⌂</span>Casa</a>
+      <p class="side-label">Minha seleção</p>
       <a class="side-link" href="#carrinho"><span class="side-icon">♧</span>Carrinho</a>
-      <div class="sidebar-note"><strong>Ofertas selecionadas</strong><p>Links verificados e produtos escolhidos pela curadoria NEXO.</p></div>
+      <div class="sidebar-note"><strong>Ofertas selecionadas</strong><p>Achados publicados após a verificação de dados e links.</p></div>
     </aside>
 
     <main class="main">
-      <div class="main-heading"><div><h1>Destaques</h1><p>Achados escolhidos para você.</p></div><div class="welcome-actions"><button class="icon-button" type="button" aria-label="Tema claro">☼</button><button class="icon-button" type="button" aria-label="Tema escuro">☾</button></div></div>
-      <section class="dashboard" id="destaques" aria-label="Destaques e ofertas">
-        <div class="panel featured">
-          <div class="panel-head"><h2>Destaques da Semana</h2><a href="#eletronicos">Ver catálogo ↗</a></div>
-          <div class="featured-items">
-            <a class="featured-item" href="#eletronicos"><div class="product-thumb"><img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&amp;h=400&amp;fit=crop" alt="Console PlayStation 5" loading="lazy"></div><p>PlayStation 5 Slim</p><small>R$ 3.500,00</small></a>
-            <a class="featured-item" href="#moda"><div class="product-thumb"><span class="emoji" aria-hidden="true">✦</span></div><p>Moda &amp; acessórios</p><small>Novidades em breve</small></a>
-            <a class="featured-item" href="#beleza"><div class="product-thumb"><span class="emoji" aria-hidden="true">♡</span></div><p>Beleza &amp; achados</p><small>Novidades em breve</small></a>
+      <section id="destaques" aria-labelledby="page-title">
+        <div class="page-heading"><div><h1 id="page-title">Destaques</h1><p>Produtos e achados selecionados pela NEXO.</p></div><div class="page-tools"><button class="round-tool" type="button" aria-label="Aparência clara">☼</button><button class="round-tool" type="button" aria-label="Aparência escura">☾</button></div></div>
+        <div class="dashboard">
+          <article class="panel featured"><div class="panel-heading"><h2>Destaques da Semana</h2><a href="#eletronicos">Ver catálogo ↗</a></div><div class="featured-items">
+            <a class="featured-item" href="#eletronicos"><div class="thumb"><img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&amp;h=400&amp;fit=crop" alt="Console PlayStation 5" loading="lazy"></div><p>PlayStation 5 Slim</p><small>R$ 3.500,00</small></a>
+            <a class="featured-item" href="#moda"><div class="thumb"><span class="thumb-art" aria-hidden="true">✦</span></div><p>Moda &amp; acessórios</p><small>Novidades em breve</small></a>
+            <a class="featured-item" href="#beleza"><div class="thumb"><span class="thumb-art" aria-hidden="true">⌚</span></div><p>Beleza &amp; achados</p><small>Novidades em breve</small></a>
+          </div><div class="carousel-controls" aria-hidden="true"><i></i><i></i><i></i></div></article>
+          <div class="promo-column">
+            <article class="panel promo"><h2>Ofertas Exclusivas</h2><p>Confira a oferta do produto em destaque.</p><a class="button" href="https://meli.la/2vc9uPn" target="_blank" rel="noopener noreferrer">Ver oferta <span aria-hidden="true">↗</span></a></article>
+            <a class="panel promo cart-promo" href="#carrinho"><div><h2>Carrinho</h2><p>Seus produtos favoritos.</p></div><span class="cart-glyph" aria-hidden="true">♧</span></a>
           </div>
-          <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
         </div>
-        <article class="panel promo"><h2>Ofertas Exclusivas</h2><p>Confira o produto em destaque e acesse a oferta direto na loja.</p><a class="button" href="#eletronicos">Ver oferta <span aria-hidden="true">↗</span></a></article>
+
+        <div class="utility-grid" aria-label="Atalhos e informações">
+          <section class="panel utility quick-categories"><div class="panel-heading"><h3>Ofertas &amp; categorias</h3></div><a class="quick-link" href="#eletronicos"><span class="side-icon">✧</span>Ofertas <span>›</span></a><a class="quick-link" href="#eletronicos"><span class="side-icon">▯</span>Celulares <span>›</span></a><a class="quick-link" href="#eletronicos"><span class="side-icon">▣</span>Periféricos <span>›</span></a><a class="quick-link" href="#eletronicos"><span class="side-icon">♫</span>Áudio <span>›</span></a><a class="quick-link" href="#carrinho"><span class="side-icon">♧</span>Carrinho <span>›</span></a></section>
+          <section class="panel utility"><div class="panel-heading"><h3>Calculadora</h3><span style="color:var(--subtle);font-size:8px">Comparar preços</span></div><div class="calc-display"><div>Preço atual</div><div>—</div></div><div class="calc-tabs"><span>Preço atual</span><span>Comparação</span></div><div class="calc-keys" aria-hidden="true"><span>%</span><span>7</span><span>8</span><span>9</span><span>÷</span><span>AC</span><span>4</span><span>5</span><span>6</span><span>×</span><span>⌫</span><span>1</span><span>2</span><span>3</span><span>−</span><span>±</span><span>0</span><span>.</span><span>=</span><span>+</span></div></section>
+          <section class="panel utility insight"><div class="panel-heading"><h3>Categorias populares</h3><a href="#eletronicos" style="color:var(--lavender);font-size:8px">Explorar</a></div><span class="insight-copy">Explore nossos catálogos</span><svg class="chart" viewBox="0 0 300 90" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ad3aff" stop-opacity=".36"/><stop offset="1" stop-color="#ad3aff" stop-opacity="0"/></linearGradient></defs><path class="chart-grid" d="M0 15H300M0 39H300M0 63H300M0 87H300"/><path class="chart-area" d="M0 78 C25 74 28 44 52 51 S87 66 108 48 S139 60 162 25 S201 43 219 52 S253 54 270 24 S290 34 300 12 V90 H0Z"/><path class="chart-line" d="M0 78 C25 74 28 44 52 51 S87 66 108 48 S139 60 162 25 S201 43 219 52 S253 54 270 24 S290 34 300 12"/></svg><div class="chart-labels"><span>Eletrônicos</span><span>Moda</span><span>Casa</span><span>Beleza</span></div></section>
+        </div>
       </section>
 
-      <section class="lower-grid" aria-label="Atalhos e categorias">
-        <div class="panel quick-links"><div class="panel-head"><h3>Explore categorias</h3></div><a class="quick-link" href="#eletronicos"><span class="side-icon">▱</span>Eletrônicos <span>›</span></a><a class="quick-link" href="#moda"><span class="side-icon">♧</span>Moda <span>›</span></a><a class="quick-link" href="#beleza"><span class="side-icon">♡</span>Beleza &amp; achados <span>›</span></a><a class="quick-link" href="#casa"><span class="side-icon">⌂</span>Casa <span>›</span></a></div>
-        <div class="panel calculator"><div class="panel-head"><h3>Calculadora de ofertas</h3></div><div class="calculator-display"><div>Desconto</div><div>—</div></div><div class="calc-tabs"><span>Preço atual</span><span>Comparação</span></div><div class="calc-keys" aria-hidden="true"><span>%</span><span>7</span><span>8</span><span>9</span><span>÷</span><span>AC</span><span>4</span><span>5</span><span>6</span><span>×</span><span>⌫</span><span>1</span><span>2</span><span>3</span><span>−</span><span>±</span><span>0</span><span>.</span><span>=</span><span>+</span></div></div>
-        <div class="panel popular"><div class="panel-head"><h3>Categorias populares</h3></div><div class="popular-empty"><span class="sparkle" aria-hidden="true">✧</span><p>Novas seleções aparecem aqui quando forem verificadas.</p></div></div>
-      </section>
+      <section class="catalog" id="eletronicos" aria-labelledby="electronics-title"><div class="catalog-head"><div><h2 id="electronics-title">Eletrônicos</h2><p>Produtos selecionados de tecnologia e acessórios.</p></div><span class="market-badge">Mercado Livre</span></div><div class="catalog-body"><aside class="panel catalog-menu" aria-label="Categorias de eletrônicos"><h3>Categorias</h3><a href="#eletronicos"><span>▯</span>Celulares e acessórios</a><a href="#eletronicos"><span>▣</span>Periféricos</a><a href="#eletronicos"><span>♫</span>Áudio e fones</a><a href="#eletronicos"><span>⌘</span>Consoles e games</a></aside><div class="product-grid"><article class="product-card"><a class="product-image" href="https://meli.la/2vc9uPn" target="_blank" rel="noopener noreferrer" aria-label="Ver oferta do PlayStation 5"><img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&amp;h=500&amp;fit=crop" alt="Console PlayStation 5" loading="lazy"></a><div class="product-info"><h3>Console PlayStation 5 Sony Slim Standard 1 TB</h3><p>R$ 3.500,00 · Mercado Livre</p><a class="button" href="https://meli.la/2vc9uPn" target="_blank" rel="noopener noreferrer">Ver oferta ↗</a></div></article><div class="empty-state product-card extra"><strong>Mais eletrônicos em breve</strong>Novos itens serão adicionados após verificação.</div><div class="empty-state product-card extra"><strong>Achados verificados</strong>Sem ofertas simuladas neste catálogo.</div></div></div></section>
 
-      <section class="product-section" id="eletronicos" aria-labelledby="electronics-title"><div class="section-heading"><div><h2 id="electronics-title">Eletrônicos</h2><p>Produto selecionado de tecnologia e acessórios.</p></div><span>Mercado Livre</span></div><article class="offer-card"><div class="offer-image"><img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=700&amp;h=500&amp;fit=crop" alt="Console PlayStation 5 Sony Slim Standard" loading="lazy"></div><div class="offer-content"><p class="offer-label">Produto em destaque</p><h3>Console PlayStation 5 Sony Slim Standard 1 TB</h3><p>Produto novo · Versão Standard · Anúncio internacional</p><div class="offer-bottom"><span class="offer-price">R$ 3.500,00</span><a class="button" href="https://meli.la/2vc9uPn" target="_blank" rel="noopener noreferrer">Ver oferta ↗</a></div></div></article></section>
-
-      <section class="product-section" id="moda" aria-labelledby="fashion-title"><div class="section-heading"><div><h2 id="fashion-title">Moda</h2><p>Roupas, calçados, bolsas e acessórios.</p></div><span>SHEIN</span></div><div class="empty-state"><strong>Novos achados em breve</strong>Nenhum produto publicado neste catálogo no momento. Os itens serão adicionados após a verificação de dados e links reais.</div></section>
-      <section class="product-section" id="beleza" aria-labelledby="beauty-title"><div class="section-heading"><div><h2 id="beauty-title">Beleza &amp; achados</h2><p>Cuidados pessoais e gadgets populares.</p></div><span>Shopee · TikTok Shop</span></div><div class="empty-state"><strong>Nenhum produto publicado ainda</strong>Este catálogo receberá apenas produtos e links verificados.</div></section>
-      <section class="product-section" id="casa" aria-labelledby="home-title"><div class="section-heading"><div><h2 id="home-title">Casa</h2><p>Uma categoria pronta para receber novos achados verificados.</p></div></div><div class="empty-state"><strong>Novidades em breve</strong>Produtos serão adicionados quando os dados e links estiverem verificados.</div></section>
+      <section class="catalog" id="moda" aria-labelledby="fashion-title"><div class="catalog-head"><div><h2 id="fashion-title">Moda</h2><p>Roupas, calçados, bolsas e acessórios.</p></div><span class="market-badge">SHEIN</span></div><div class="empty-state"><strong>Novos achados em breve</strong>Nenhum produto publicado neste catálogo no momento. Os itens serão adicionados após a verificação de dados e links reais.</div></section>
+      <section class="catalog" id="beleza" aria-labelledby="beauty-title"><div class="catalog-head"><div><h2 id="beauty-title">Beleza &amp; achados</h2><p>Cuidados pessoais e gadgets populares.</p></div><span class="market-badge">Shopee · TikTok Shop</span></div><div class="empty-state"><strong>Nenhum produto publicado ainda</strong>Este catálogo receberá apenas produtos e links verificados.</div></section>
+      <section class="catalog" id="casa" aria-labelledby="home-title"><div class="catalog-head"><div><h2 id="home-title">Casa</h2><p>Uma categoria pronta para novos achados verificados.</p></div></div><div class="empty-state"><strong>Novidades em breve</strong>Produtos serão adicionados quando os dados e links estiverem verificados.</div></section>
       <div class="disclosure" id="contato">Alguns links podem ser de afiliados. Podemos receber comissão por compras realizadas através deles, sem custo adicional para você. Os produtos publicados são identificados nos respectivos catálogos.</div>
       <footer>© 2026 NEXO Achados</footer>
     </main>
   </div>
-  <nav class="mobile-nav" aria-label="Navegação móvel"><a class="active" href="#inicio"><span>⌂</span>Início</a><a href="#destaques"><span>✧</span>Destaques</a><a href="#eletronicos"><span>▱</span>Ofertas</a><a href="#carrinho"><span>♧</span>Carrinho</a></nav>
+  <nav class="mobile-nav" aria-label="Navegação móvel"><a class="active" href="#destaques"><span>⌂</span>Início</a><a href="#eletronicos"><span>▱</span>Eletrônicos</a><a href="#moda"><span>♧</span>Moda</a><a href="#carrinho"><span>♧</span>Carrinho</a></nav>
 </body>
 </html>
